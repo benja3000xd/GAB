@@ -81,6 +81,24 @@
                         </Grid>
                     </StackPanel>
                 </Border>
+
+                <!-- Tarjeta 5: Copia de Seguridad y Migración -->
+                <Border Style="{DynamicResource CardBorder}">
+                    <StackPanel>
+                        <TextBlock Text="Copia de Seguridad y Migración" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource TextPrimary}" Margin="0,0,0,4"/>
+                        <TextBlock Text="Importa anuncios desde un archivo JSON (compatible con versiones de Python o copias de GAB) o exporta tu lista actual." 
+                                   FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,10" TextWrapping="Wrap"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="BtnImportarAnuncios" Grid.Column="0" Content="📥 Importar JSON..." Click="BtnImportarAnuncios_Click" Padding="0,9"/>
+                            <Button x:Name="BtnExportarAnuncios" Grid.Column="2" Content="📤 Exportar JSON..." Click="BtnExportarAnuncios_Click" Padding="0,9"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
             </StackPanel>
         </ScrollViewer>
 

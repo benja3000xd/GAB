@@ -9,7 +9,10 @@
         SnapsToDevicePixels="True"
         UseLayoutRounding="True"
         StateChanged="Window_StateChanged"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        AllowDrop="True"
+        Drop="Window_Drop"
+        DragEnter="Window_DragEnter">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

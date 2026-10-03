@@ -180,11 +180,17 @@ namespace GAB
                 Owner = this
             };
 
-            if (dlg.ShowDialog() == true)
+            bool? res = dlg.ShowDialog();
+            if (res == true || dlg.AnunciosFueronModificados)
             {
                 if (_menuItemAutoStart != null)
                 {
                     _menuItemAutoStart.Checked = _settings.IniciarConWindows;
+                }
+
+                if (dlg.AnunciosFueronModificados)
+                {
+                    RecargarAnuncios();
                 }
             }
         }
@@ -237,6 +243,19 @@ namespace GAB
         private void GuardarCambios()
         {
             StorageManager.GuardarAnuncios(_anunciosList.ToList());
+            _scheduler.UpdateAnuncios(_anunciosList.ToList());
+            GridAnuncios.Items.Refresh();
+        }
+
+        public void RecargarAnuncios()
+        {
+            var cargados = StorageManager.CargarAnuncios();
+            _anunciosList.Clear();
+            foreach (var a in cargados)
+            {
+                _anunciosList.Add(a);
+            }
+            ActualizarNumerosFila();
             _scheduler.UpdateAnuncios(_anunciosList.ToList());
             GridAnuncios.Items.Refresh();
         }
@@ -375,6 +394,94 @@ namespace GAB
             catch (Exception ex)
             {
                 MessageBox.Show($"No se pudo abrir el archivo de log: {ex.Message}", "Ver Log", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void Window_DragEnter(object sender, System.Windows.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+            {
+                var files = (string[]?)e.Data.GetData(System.Windows.DataFormats.FileDrop);
+                if (files != null && files.Length > 0 && files.Any(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase)))
+                {
+                    e.Effects = System.Windows.DragDropEffects.Copy;
+                    e.Handled = true;
+                    return;
+                }
+            }
+            e.Effects = System.Windows.DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void Window_Drop(object sender, System.Windows.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+            {
+                var files = (string[]?)e.Data.GetData(System.Windows.DataFormats.FileDrop);
+                if (files != null && files.Length > 0)
+                {
+                    var jsonFile = files.FirstOrDefault(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase));
+                    if (jsonFile != null)
+                    {
+                        ProcesarImportacionJson(jsonFile);
+                    }
+                }
+            }
+        }
+
+        private void ProcesarImportacionJson(string rutaArchivo)
+        {
+            try
+            {
+                var nombreArchivo = System.IO.Path.GetFileName(rutaArchivo);
+                var actuales = _anunciosList.ToList();
+                bool reemplazar = false;
+
+                if (actuales.Count > 0)
+                {
+                    var opcion = MessageBox.Show(
+                        $"¿Cómo deseas importar el archivo '{nombreArchivo}'?\n\n" +
+                        "• Sí: REEMPLAZAR todos los anuncios actuales por los importados.\n" +
+                        "• No: AÑADIR los anuncios a la lista actual sin borrar los existentes.\n" +
+                        "• Cancelar: Cancelar la importación.",
+                        "Importar Anuncios (JSON)",
+                        MessageBoxButton.YesNoCancel,
+                        MessageBoxImage.Question);
+
+                    if (opcion == MessageBoxResult.Cancel)
+                        return;
+
+                    reemplazar = (opcion == MessageBoxResult.Yes);
+                }
+
+                var (importados, encontrados, faltantes, _) = StorageManager.ImportarAnunciosDesdeArchivo(
+                    rutaArchivo,
+                    reemplazar,
+                    actuales);
+
+                if (importados == 0)
+                {
+                    MessageBox.Show("No se encontraron anuncios válidos en el archivo seleccionado.",
+                        "Importar Anuncios", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                RecargarAnuncios();
+
+                string mensaje = $"Se han importado {importados} anuncio(s) correctamente.\n" +
+                                 $"• Audios vinculados con éxito: {encontrados}";
+
+                if (faltantes > 0)
+                {
+                    mensaje += $"\n• Audios pendientes de ubicar: {faltantes}\n\n" +
+                               "Los audios que no estaban en la ruta se activarán automáticamente cuando coloques los archivos MP3 dentro de la carpeta 'GAB_AUDIOS'.";
+                }
+
+                MessageBox.Show(mensaje, "Importación Exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al importar el archivo: {ex.Message}", "Error al Importar", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
