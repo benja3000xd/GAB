@@ -1,0 +1,95 @@
+<Window x:Class="GAB.Views.SettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ajustes - GAB" Height="580" Width="530"
+        MinWidth="500" MinHeight="550"
+        Icon="/Resources/logo_gab.ico"
+        Background="{DynamicResource MainBackground}"
+        WindowStartupLocation="CenterOwner"
+        SnapsToDevicePixels="True"
+        UseLayoutRounding="True"
+        ResizeMode="NoResize">
+    <Grid Margin="22,18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabecera de Ajustes -->
+        <Border Grid.Row="0" Margin="0,0,0,16">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Path Width="20" Height="20" Stretch="Uniform" Fill="{DynamicResource AccentBrush}" Margin="0,0,10,0" VerticalAlignment="Center"
+                          Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+                    <TextBlock Text="Ajustes de GAB" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock Text="Personaliza el inicio, apariencia, nivel de atenuación de audio y carpetas del sistema." 
+                           FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="30,3,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Contenido de Ajustes -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,16">
+            <StackPanel>
+                <!-- Tarjeta 1: Sistema e Inicio -->
+                <Border Style="{DynamicResource CardBorder}">
+                    <StackPanel>
+                        <TextBlock Text="Sistema y Notificaciones" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource TextPrimary}" Margin="0,0,0,10"/>
+                        <CheckBox x:Name="ChkAutostart" Content="Iniciar GAB automáticamente con Windows (en bandeja)" Margin="0,0,0,10"/>
+                        <CheckBox x:Name="ChkNotificaciones" Content="Activar notificaciones en la bandeja (minimizado o errores)"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tarjeta 2: Apariencia Visual -->
+                <Border Style="{DynamicResource CardBorder}">
+                    <StackPanel>
+                        <TextBlock Text="Apariencia y Tema" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource TextPrimary}" Margin="0,0,0,10"/>
+                        <WrapPanel>
+                            <RadioButton x:Name="RbTemaSistema" Content="Sistema" GroupName="TemaGroup" Margin="0,0,20,0" Checked="RbTema_Checked" VerticalAlignment="Center"/>
+                            <RadioButton x:Name="RbTemaOscuro" Content="Modo Oscuro" GroupName="TemaGroup" Margin="0,0,20,0" Checked="RbTema_Checked" VerticalAlignment="Center"/>
+                            <RadioButton x:Name="RbTemaClaro" Content="Modo Claro" GroupName="TemaGroup" Checked="RbTema_Checked" VerticalAlignment="Center"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tarjeta 3: Atenuación de Audio (Ducking) -->
+                <Border Style="{DynamicResource CardBorder}">
+                    <StackPanel>
+                        <DockPanel LastChildFill="False" Margin="0,0,0,6">
+                            <TextBlock Text="Atenuación de volumen de otras apps:" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtDuckingValor" Text="0% (Silencio total)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentBrush}" DockPanel.Dock="Right" VerticalAlignment="Center"/>
+                        </DockPanel>
+                        <Slider x:Name="SliderDucking" Minimum="0" Maximum="50" TickFrequency="5" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="5" ValueChanged="SliderDucking_ValueChanged" Margin="0,4,0,8" Cursor="Hand"/>
+                        <TextBlock Text="Reduce el volumen de Spotify, navegadores u otras aplicaciones de Windows mientras se reproduce la cuña." 
+                                   FontSize="11" Foreground="{DynamicResource TextSecondary}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tarjeta 4: Carpetas y Archivos -->
+                <Border Style="{DynamicResource CardBorder}">
+                    <StackPanel>
+                        <TextBlock Text="Carpetas de Datos" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource TextPrimary}" Margin="0,0,0,10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="BtnAbrirAudios" Grid.Column="0" Content="📁 Carpeta GAB_AUDIOS" Click="BtnAbrirAudios_Click" Padding="0,9"/>
+                            <Button x:Name="BtnAbrirLogs" Grid.Column="2" Content="📄 Carpeta de Logs" Click="BtnAbrirLogs_Click" Padding="0,9"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Botones de Acción Inferiores -->
+        <Border Grid.Row="2" Padding="0,8,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnCancelar" Content="Cancelar" Click="BtnCancelar_Click" IsCancel="True" Margin="0,0,10,0" Padding="18,8"/>
+                <Button x:Name="BtnGuardar" Content="Guardar Ajustes" Click="BtnGuardar_Click" IsDefault="True" Style="{DynamicResource PrimaryGreenButton}" Padding="22,8"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

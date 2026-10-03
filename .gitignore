@@ -1,0 +1,100 @@
+## ==============================================================
+## GAB - Gestor de Anuncios de Audio (.NET 8 WPF) - .gitignore
+## ==============================================================
+
+# --------------------------------------------------------------
+# 1. Archivos específicos de la aplicación GAB (Datos de usuario y runtime)
+# --------------------------------------------------------------
+# Carpeta de audios locales importados por el usuario
+GAB_AUDIOS/
+**/GAB_AUDIOS/
+
+# Archivo de configuración local de anuncios (contiene rutas absolutas del usuario)
+anuncios.json
+**/anuncios.json
+
+# Archivo de configuración general y preferencias del usuario
+settings.json
+**/settings.json
+
+# Registros de log diarios generados en ejecución
+logs/
+**/logs/
+*.log
+
+# --------------------------------------------------------------
+# Archivos y herramientas de desarrollo local (excluidos del repositorio público)
+# --------------------------------------------------------------
+AGENTS.md
+GAB.Tests/
+**/GAB.Tests/
+.github/
+**/.github/
+
+# --------------------------------------------------------------
+# 2. Artefactos de compilación y salida (.NET / C#)
+# --------------------------------------------------------------
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Archivos de depuración y ejecutables
+*.pdb
+*.ilk
+*.aps
+
+# --------------------------------------------------------------
+# 3. Entornos de desarrollo e IDEs (Visual Studio, VS Code, JetBrains)
+# --------------------------------------------------------------
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# JetBrains Rider / ReSharper
+_ReSharper*/
+*.ReSharper
+*.DotSettings.user
+.idea/
+
+# --------------------------------------------------------------
+# 4. Pruebas y Cobertura (xUnit, FlaUI, VSTest)
+# --------------------------------------------------------------
+TestResult*/
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.coverage
+*.coveragexml
+
+# --------------------------------------------------------------
+# 5. Paquetes y dependencias (NuGet)
+# --------------------------------------------------------------
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.assets.json
+
+# --------------------------------------------------------------
+# 6. Archivos del Sistema Operativo (Windows)
+# --------------------------------------------------------------
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
