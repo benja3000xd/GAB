@@ -11,7 +11,19 @@
 - **Prevención de solapamientos:** Impide que dos anuncios coincidan en el mismo horario.
 - **Temas Claro y Oscuro:** Compatible con modo claro, modo oscuro y seguimiento automático del tema del sistema Windows.
 - **Bandeja del sistema:** Funciona en segundo plano minimizado en la bandeja del sistema (*System Tray*) con opción de inicio automático con Windows.
-- **Portable:** Se compila en un único archivo ejecutable (`GAB.exe`) sin necesidad de instalación.
+- **100% Portable:** Ejecutable único sin instalador. Todos sus datos y configuraciones se generan de forma autónoma en el mismo directorio donde se ubica el `.exe`.
+
+---
+
+## 📁 Portabilidad y Datos Locales
+
+GAB es completamente autocontenido y no ensucia el sistema. Se recomienda colocar `GAB.exe` en su propia carpeta (por ejemplo, `C:\GAB\` o en la ubicación que prefieras). 
+
+Al ejecutarse, la aplicación creará automáticamente en ese mismo directorio:
+- **`GAB_AUDIOS/`**: Carpeta donde se guardan los audios de los anuncios programados.
+- **`anuncios.json`**: Lista de anuncios, horarios y días configurados.
+- **`settings.json`**: Preferencias de tema, nivel de ducking, notificaciones e inicio.
+- **`logs/`**: Registros diarios de actividad (con limpieza automática de más de 30 días).
 
 ---
 
@@ -39,7 +51,7 @@
    ```bash
    dotnet publish GAB.csproj -c Release -r win-x64 --no-self-contained
    ```
-   El archivo listo para usar se generará en:
+   El ejecutable generado estará en:
    `bin/Release/net8.0-windows/win-x64/publish/GAB.exe`
 
 ---
