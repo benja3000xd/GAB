@@ -26,7 +26,7 @@
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone https://github.com/TU_USUARIO/GAB.git
+   git clone https://github.com/benja3000xd/GAB.git
    cd GAB
    ```
 
